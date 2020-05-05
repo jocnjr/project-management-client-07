@@ -36,6 +36,17 @@ class ProjectList extends Component {
                   <h3>{project.title}</h3>
                 </Link>
                 <p style={{ maxWidth: "400px" }}>{project.description} </p>
+                <ul>
+                  {project.tasks.map((task, index) => {
+                    return (
+                      <li key={index}>
+                        <Link to={`/projects/${project._id}/tasks/${task._id}`}>
+                          {task.title}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             );
           })}
