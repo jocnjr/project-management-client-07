@@ -42,25 +42,35 @@ class EditProject extends Component {
 
   render() {
     return (
-      <div>
+      <div className="section">
         <hr />
-        <h3>Edit form</h3>
+        <h3 className="title is-5">Edit form</h3>
         <form onSubmit={this.handleFormSubmit}>
-          <label>Title:</label>
-          <input
-            type="text"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange}
-          />
-          <label>Description:</label>
-          <textarea
-            name="description"
-            value={this.state.description}
-            onChange={this.handleChange}
-          />
+          <div className="field">
+            <div className="control">
+              <label>Title:</label>
+              <input
+                className="input is-small"
+                type="text"
+                name="title"
+                value={this.state.title}
+                onChange={this.handleChange}
+              />
+            </div>
+          </div>
+          <div className="field">
+            <div className="control">
+              <label>Description:</label>
+              <textarea
+                className="textarea"
+                name="description"
+                value={this.state.description}
+                onChange={this.handleChange}
+              />
+            </div>
+          </div>
 
-          <input type="submit" value="Submit" />
+          <input className="button" type="submit" value="Submit" />
         </form>
       </div>
     );

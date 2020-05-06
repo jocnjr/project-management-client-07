@@ -71,7 +71,7 @@ class AddTask extends Component {
               onChange={(e) => this.handleChange(e)}
             />
 
-            <input type="submit" value="Submit" />
+            <input className="button" type="submit" value="Submit" />
           </form>
         </div>
       );

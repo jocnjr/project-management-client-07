@@ -41,7 +41,7 @@ class ProjectDetails extends Component {
       <div>
         {this.state.project ? (
           <>
-            <h1>{this.state.project.title}</h1>
+            <h1 className="title is-1">{this.state.project.title}</h1>
             <p>{this.state.project.description}</p>
             <h2>Tasks</h2>
             <ul>
@@ -62,7 +62,9 @@ class ProjectDetails extends Component {
                 {...this.props}
               />
             </div>
-            <button onClick={this.deleteProject}>Delete project</button>
+            <button className="button" onClick={this.deleteProject}>
+              Delete project
+            </button>
             <br />
             <AddTask
               theProject={this.state.project}

@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-import AddProject from "./AddProject"; // <== !!!
+import AddProject from "./AddProject";
 
 class ProjectList extends Component {
   constructor(props) {
@@ -32,9 +32,9 @@ class ProjectList extends Component {
           {this.state.listOfProjects.map((project) => {
             return (
               <div key={project._id}>
-                <Link to={`/projects/${project._id}`}>
-                  <h3>{project.title}</h3>
-                </Link>
+                <h3 className="title is-2">
+                  <Link to={`/projects/${project._id}`}>{project.title}</Link>
+                </h3>
                 <p style={{ maxWidth: "400px" }}>{project.description} </p>
                 <ul>
                   {project.tasks.map((task, index) => {
