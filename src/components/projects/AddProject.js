@@ -6,21 +6,22 @@ import axios from "axios";
 class AddProject extends Component {
   constructor(props) {
     super(props);
-    this.state = { title: "", description: "" };
+    this.state = { title: "", description: "", imageUrl: "", originalName: "" };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleFileChange = this.handleFileChange.bind(this);
   }
 
   handleFormSubmit(event) {
     event.preventDefault();
-    console.log("inside add project form submit");
-    const title = this.state.title;
-    const description = this.state.description;
+
+    const { title, description, imageUrl } = this.state;
+
     axios
       .post(
         "http://localhost:5000/api/projects",
-        { title, description },
+        { title, description, imageUrl },
         { withCredentials: true }
       )
       .then(() => {
@@ -33,6 +34,23 @@ class AddProject extends Component {
   handleChange(event) {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+  }
+
+  handleFileChange(event) {
+    const uploadData = new FormData();
+
+    uploadData.append("imageUrl", event.target.files[0]);
+    // console.log(uploadData);
+
+    axios
+      .post("http://localhost:5000/api/upload", uploadData)
+      .then((response) =>
+        this.setState({
+          imageUrl: response.data.secure_url,
+          originalName: response.data.originalName,
+        })
+      )
+      .catch((error) => console.log(error));
   }
 
   render() {
@@ -62,7 +80,25 @@ class AddProject extends Component {
               />
             </div>
           </div>
-
+          <div className="file has-name is-boxed">
+            <label className="file-label">
+              <input
+                className="file-input"
+                type="file"
+                name="imageUrl"
+                onChange={this.handleFileChange}
+              />
+              <span className="file-cta">
+                <span className="file-icon">
+                  <i className="fas fa-upload"></i>
+                </span>
+                <span className="file-label">Choose a file…</span>
+              </span>
+              <span className="file-name">
+                {this.state.originalName && this.state.originalName}
+              </span>
+            </label>
+          </div>
           <input className="button" type="submit" value="Submit" />
         </form>
       </div>

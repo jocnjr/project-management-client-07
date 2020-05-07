@@ -37,8 +37,18 @@ class ProjectList extends Component {
                 <h3 className="title is-2">
                   <Link to={`/projects/${project._id}`}>{project.title}</Link>
                 </h3>
+                <figure className="image is-4by3">
+                  {project.imageUrl ? (
+                    <img src={project.imageUrl} alt={project.title} />
+                  ) : (
+                    <img
+                      src="https://versions.bulma.io/0.7.0/images/placeholders/256x256.png"
+                      alt={project.title}
+                    />
+                  )}
+                </figure>
                 <p className="content" style={{ maxWidth: "400px" }}>
-                  {project.description}{" "}
+                  {project.description}
                 </p>
                 <ul className="section">
                   {project.tasks.length > 0 && (
