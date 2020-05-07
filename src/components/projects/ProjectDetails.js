@@ -17,10 +17,13 @@ class ProjectDetails extends Component {
   }
 
   getSingleProject() {
-    const { projectId } = this.props.match.params;
+    console.log(this.props);
+    const { id } = this.props.match.params;
 
     axios
-      .get("http://localhost:5000/api/projects/" + projectId)
+      .get("http://localhost:5000/api/projects/" + id, {
+        withCredentials: true,
+      })
       .then((response) => this.setState({ project: response.data }))
       .catch((error) => console.log(error));
   }
@@ -31,9 +34,33 @@ class ProjectDetails extends Component {
 
   deleteProject() {
     axios
-      .delete("http://localhost:5000/api/projects/" + this.state.project._id)
+      .delete("http://localhost:5000/api/projects/" + this.state.project._id, {
+        withCredentials: true,
+      })
       .then(() => this.props.history.push("/projects"))
       .catch((error) => console.log(error));
+  }
+
+  ownershipCheck(project) {
+    if (
+      this.props.loggedInUser &&
+      project.owner === this.props.loggedInUser._id
+    ) {
+      return (
+        <div>
+          <div>
+            <EditProject
+              theProject={this.state.project}
+              getTheProject={this.getSingleProject}
+              {...this.props}
+            />
+          </div>
+          <button className="button" onClick={this.deleteProject}>
+            Delete project
+          </button>
+        </div>
+      );
+    }
   }
 
   render() {
@@ -55,16 +82,7 @@ class ProjectDetails extends Component {
                 </li>
               ))}
             </ul>
-            <div>
-              <EditProject
-                theProject={this.state.project}
-                getTheProject={this.getSingleProject}
-                {...this.props}
-              />
-            </div>
-            <button className="button" onClick={this.deleteProject}>
-              Delete project
-            </button>
+            {this.ownershipCheck(this.state.project)}
             <br />
             <AddTask
               theProject={this.state.project}

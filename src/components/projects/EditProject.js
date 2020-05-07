@@ -21,10 +21,14 @@ class EditProject extends Component {
     event.preventDefault();
 
     axios
-      .put(`http://localhost:5000/api/projects/${this.props.theProject._id}`, {
-        title,
-        description,
-      })
+      .put(
+        `http://localhost:5000/api/projects/${this.props.theProject._id}`,
+        {
+          title,
+          description,
+        },
+        { withCredentials: true }
+      )
       .then(() => {
         this.props.getTheProject();
         // after submitting the form, redirect to '/projects'
@@ -44,11 +48,11 @@ class EditProject extends Component {
     return (
       <div className="section">
         <hr />
-        <h3 className="title is-5">Edit form</h3>
+        <h3 className="title is-3">Edit form</h3>
         <form onSubmit={this.handleFormSubmit}>
           <div className="field">
             <div className="control">
-              <label>Title:</label>
+              <label className="label">Title</label>
               <input
                 className="input is-small"
                 type="text"
@@ -60,7 +64,7 @@ class EditProject extends Component {
           </div>
           <div className="field">
             <div className="control">
-              <label>Description:</label>
+              <label className="label">Description</label>
               <textarea
                 className="textarea"
                 name="description"

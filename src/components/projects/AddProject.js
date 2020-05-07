@@ -18,7 +18,11 @@ class AddProject extends Component {
     const title = this.state.title;
     const description = this.state.description;
     axios
-      .post("http://localhost:5000/api/projects", { title, description })
+      .post(
+        "http://localhost:5000/api/projects",
+        { title, description },
+        { withCredentials: true }
+      )
       .then(() => {
         this.props.getData();
         this.setState({ title: "", description: "" });
@@ -37,7 +41,7 @@ class AddProject extends Component {
         <form onSubmit={this.handleFormSubmit}>
           <div className="field">
             <div className="control">
-              <label>Title:</label>
+              <label className="label">Title</label>
               <input
                 className="input is-small"
                 type="text"
@@ -49,7 +53,7 @@ class AddProject extends Component {
           </div>
           <div className="field">
             <div className="control">
-              <label>Description:</label>
+              <label className="label">Description</label>
               <textarea
                 className="textarea"
                 name="description"

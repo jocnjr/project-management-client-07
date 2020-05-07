@@ -1,10 +1,10 @@
-// auth/Signup.js
+// auth/Login.js
 
 import React, { Component } from "react";
 import AuthService from "./auth-service";
 import { Link } from "react-router-dom";
 
-class Signup extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,28 +24,35 @@ class Signup extends Component {
     const password = this.state.password;
 
     this.service
-      .signup(username, password)
+      .login(username, password)
       .then((response) => {
+        let redirectTo = "/projects";
+
         this.setState({
           username: "",
           password: "",
           errorMsgUsername: null,
           errorMsgPassword: null,
         });
-        console.log(response);
+
         this.props.getUser(response);
-        this.props.history.push("/projects");
+        // redirecting to /projects
+        if (this.props.location.state) {
+          redirectTo = this.props.location.state.from.pathname;
+        }
+        this.props.history.push(redirectTo);
       })
       .catch((error) => {
         const { message } = error.response.data;
-        message.includes("password")
+
+        message.endsWith("password.")
           ? this.setState({
               errorMsgPassword: message,
             })
           : this.setState({
               errorMsgUsername: message,
             });
-        console.log(message);
+        console.log(error.response, message);
       });
   }
 
@@ -55,21 +62,33 @@ class Signup extends Component {
   }
 
   render() {
+    const { errorMsgUsername, errorMsgPassword } = this.state;
+
+    const inputClassName = "input is-small";
+
+    const classNameUsername = errorMsgUsername
+      ? `${inputClassName} is-danger`
+      : inputClassName;
+    const classNamePassword = errorMsgPassword
+      ? `${inputClassName} is-danger`
+      : inputClassName;
+
     return (
       <div className="section">
         <form onSubmit={this.handleFormSubmit}>
           <div className="field">
             <div className="control">
               <label className="label">Username</label>
+
               <input
-                className="input is-small"
+                className={classNameUsername}
                 type="text"
                 name="username"
                 value={this.state.username}
                 onChange={this.handleChange}
               />
             </div>
-            {this.state.errorMsgUsername && (
+            {errorMsgUsername && (
               <p className="help is-danger">{this.state.errorMsgUsername}</p>
             )}
           </div>
@@ -77,26 +96,26 @@ class Signup extends Component {
             <div className="control">
               <label className="label">Password</label>
               <input
-                className="input is-small"
+                className={classNamePassword}
                 type="password"
                 name="password"
                 value={this.state.password}
                 onChange={this.handleChange}
               />
             </div>
-            {this.state.errorMsgPassword && (
+            {errorMsgPassword && (
               <p className="help is-danger">{this.state.errorMsgPassword}</p>
             )}
           </div>
-          <input className="button" type="submit" value="Signup" />
+          <input className="button" type="submit" value="Login" />
         </form>
         <p>
-          Already have account?
-          <Link to={"/"}> Login</Link>
+          Don't have an account?
+          <Link to={"/signup"}> Signup</Link>
         </p>
       </div>
     );
   }
 }
 
-export default Signup;
+export default Login;

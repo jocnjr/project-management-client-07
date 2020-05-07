@@ -14,11 +14,13 @@ class ProjectList extends Component {
   }
 
   getAllProjects() {
-    axios.get(`http://localhost:5000/api/projects`).then((responseFromApi) => {
-      this.setState({
-        listOfProjects: responseFromApi.data,
+    axios
+      .get(`http://localhost:5000/api/projects`, { withCredentials: true })
+      .then((responseFromApi) => {
+        this.setState({
+          listOfProjects: responseFromApi.data,
+        });
       });
-    });
   }
 
   componentDidMount() {
@@ -35,17 +37,26 @@ class ProjectList extends Component {
                 <h3 className="title is-2">
                   <Link to={`/projects/${project._id}`}>{project.title}</Link>
                 </h3>
-                <p style={{ maxWidth: "400px" }}>{project.description} </p>
-                <ul>
-                  {project.tasks.map((task, index) => {
-                    return (
-                      <li key={index}>
-                        <Link to={`/projects/${project._id}/tasks/${task._id}`}>
-                          {task.title}
-                        </Link>
-                      </li>
-                    );
-                  })}
+                <p className="content" style={{ maxWidth: "400px" }}>
+                  {project.description}{" "}
+                </p>
+                <ul className="section">
+                  {project.tasks.length > 0 && (
+                    <>
+                      <h5 className="title is-5">tasks</h5>
+                      {project.tasks.map((task, index) => {
+                        return (
+                          <li key={index} className="subtitle is-5">
+                            <Link
+                              to={`/projects/${project._id}/tasks/${task._id}`}
+                            >
+                              {task.title}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </>
+                  )}
                 </ul>
               </div>
             );

@@ -24,11 +24,15 @@ class AddTask extends Component {
     // { title, description, projectID } => this is 'req.body' that will be received on the server side in this route,
     // so the names have to match
     axios
-      .post("http://localhost:5000/api/tasks", {
-        title,
-        description,
-        projectID,
-      })
+      .post(
+        "http://localhost:5000/api/tasks",
+        {
+          title,
+          description,
+          projectID,
+        },
+        { withCredentials: true }
+      )
       .then(() => {
         // after submitting the form, retrieve project one more time so the new task is displayed as well
         //              |
@@ -54,22 +58,32 @@ class AddTask extends Component {
   showAddTaskForm() {
     if (this.state.isShowing) {
       return (
-        <div>
-          <h3>Add Task</h3>
+        <div className="section">
+          <h3 className="title is-3">Add Task</h3>
           <form onSubmit={this.handleFormSubmit}>
-            <label>Title:</label>
-            <input
-              type="text"
-              name="title"
-              value={this.state.title}
-              onChange={(e) => this.handleChange(e)}
-            />
-            <label>Description:</label>
-            <textarea
-              name="description"
-              value={this.state.description}
-              onChange={(e) => this.handleChange(e)}
-            />
+            <div className="field">
+              <div className="control">
+                <label className="label">Title</label>
+                <input
+                  className="input is-small"
+                  type="text"
+                  name="title"
+                  value={this.state.title}
+                  onChange={this.handleChange}
+                />
+              </div>
+            </div>
+            <div className="field">
+              <div className="control">
+                <label className="label">Description</label>
+                <textarea
+                  className="textarea"
+                  name="description"
+                  value={this.state.description}
+                  onChange={this.handleChange}
+                />
+              </div>
+            </div>
 
             <input className="button" type="submit" value="Submit" />
           </form>
@@ -82,7 +96,9 @@ class AddTask extends Component {
     return (
       <div>
         <hr />
-        <button onClick={() => this.toggleForm()}> Add task </button>
+        <button className="button" onClick={() => this.toggleForm()}>
+          Add task
+        </button>
         {this.showAddTaskForm()}
       </div>
     );
